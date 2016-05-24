@@ -1,0 +1,9 @@
+************************************************
+First,open the NSstudio.exe in the main catalog,
+and you can choice what you want to do.
+This tool can work only you have Python at least
+2.6 and more. 
+The models can be seen only if you have
+setuped "Blender"!!
+************************************************
+PS:If you want to optimize the codes,they are in the 'Frames' and 'Resourse'

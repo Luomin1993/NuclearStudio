@@ -1,0 +1,60 @@
+# -*- coding: utf-8 -*-
+#CCR 和 BCC 在本程序中被设定为了两个模型类；
+#at the 13:05 of 1.12.2016
+
+import numpy as np
+import scipy as sp
+import sympy as yp
+
+class CCR(object):
+	"""docstring for CCR"""
+	def __init__(self, arg):
+		super(CCR, self).__init__()
+		self.arg = arg
+	
+	def st(seta, x = [], y = [],lamda = [],judge):
+			n = len(x[0])
+			m = len(x)
+			y_inv = np.linalg.inv(y)           '''y_inv为y的逆矩阵'''
+            lamda = np.dot(y[judge],y_p)
+            temp_1 = np.dot(x,lamda)
+            temp_2 = np.linalg.inv(x[judge]) 
+            seta = np.dot(temp_1,temp_2)
+            x_prog = np.dot(x,lamda)
+            y_prog = np.dot(y,lamda)            '''改进值的计算'''
+            return (x_prog,y_prog)
+
+
+class BCC(object):
+	"""docstring for BCC"""
+	def __init__(self, arg):
+		super(BCC, self).__init__()
+		self.arg = arg
+
+	def st(seta, x = [], y = [],lamda = [],judge):
+		n = len(x[0])
+		m = len(x)
+		s = len(y)
+		sum_y = []
+		
+		temp_1 = np.dot(x,lamda)
+        temp_2 = np.linalg.inv(x[judge]) 
+        seta = np.dot(temp_1,temp_2)
+		
+		for i in range(0,s-1):
+			sum_y[i] = 0
+			for j in range(0,n-1):
+				sum_y[i] = sum_y[i] + y[i,j]*lamda[j]		
+			
+		lamda_init = []
+		for j in range(0,n-1):
+			lamda_init.append(1/n)
+
+        sum_x_judge = seta*sum(x[judge])
+        sum_y_judge = sum(y[judge])
+
+		cons = ({'type': 'ineq', 'fun': lambda sum_b: sum(sum_y) - sum_y_judge},
+                {'type': 'eq', 'fun': lambda sum_lamda: sum(lamda)})
+
+        res = sp.optiminaze.minisize(seta,lamda_init,args = lamda,constraints = cons)        		
+		
